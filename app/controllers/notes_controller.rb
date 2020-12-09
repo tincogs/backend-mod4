@@ -3,45 +3,53 @@ class NotesController < ApplicationController
 
   # GET /notes
   def index
-    @notes = Note.all
+    notes = Note.all
 
-    render json: @notes
+    render json: notes
   end
 
   # GET /notes/1
   def show
-    render json: @note
+    byebug
+    note = Note.find(params[:id])
+    render json: note
   end
 
   # POST /notes
   def create
-    @note = Note.new(note_params)
+    note = Note.new(note_params)
 
-    if @note.save
-      render json: @note, status: :created, location: @note
+    if note.save
+      render json: note, status: :created, location: note
     else
-      render json: @note.errors, status: :unprocessable_entity
+      render json: note.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /notes/1
   def update
-    if @note.update(note_params)
-      render json: @note
+    note = Note.find(params[:id])
+    if note.update(note_params)
+      render json: note
     else
-      render json: @note.errors, status: :unprocessable_entity
+      render json: note.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /notes/1
   def destroy
-    @note.destroy
+    note = Note.find(params[:id])
+
+    note.destroy
+
+    render json: note.errors
+
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_note
-      @note = Note.find(params[:id])
+      note = Note.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
